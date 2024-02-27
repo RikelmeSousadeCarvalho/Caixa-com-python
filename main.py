@@ -43,8 +43,16 @@ main.resizable(False, False)
 main.title("Projeto Caixa")
 main.geometry("900x700")
 main.configure(background="#17c9ff")
-icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/icon.ico"
+icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
 main.iconbitmap(icone)
+
+titulo = Label(main, text="Caixa", background="#17c9ff", font=("Bahnschrift", 30))
+titulo.place(x = -30, y = 0, width=900, height=100)
+
+image = Image.open("C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/carrinho.ico")
+photo = ImageTk.PhotoImage(image)
+img = Label(main, image=photo, background="#17c9ff")
+img.place(x = 500, y = 0)
 
 
 main.mainloop()
