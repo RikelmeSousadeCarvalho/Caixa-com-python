@@ -12,3 +12,5 @@ ADD Nome_Prod VARCHAR(100);
 
 INSERT INTO Produtos (Cod_Prod, ValorUnit_Prod, Quantidade_Prod, Nome_Prod)
 VALUES (1, 10.00, 5,'Papel higienico');
+
+SELECT * from Produtos;
