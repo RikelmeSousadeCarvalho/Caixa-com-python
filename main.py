@@ -28,6 +28,13 @@ def query(sql):
     except Exception as e:
         print("Erro:", e)
 
+def consultar(sql):
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    res = cursor.fetchall()
+    return res
+
+
 def adicionarProd():
     janelaProd = Toplevel()
     janelaProd.resizable(False, False)
@@ -106,13 +113,84 @@ def deletarProd():
     btn.pack()
 
 def consultarPorNome():
-    print("Consulta por nome")
+    janelaConsultaNome = Toplevel()
+    janelaConsultaNome.resizable(False, False)
+    janelaConsultaNome.title("Consultar produto por nome")
+    janelaConsultaNome.geometry("900x700")
+    janelaConsultaNome.configure(background="#17c9ff")
+    icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
+    janelaConsultaNome.iconbitmap(icone)
 
-def consultarPorID():
-    print("Consulta por ID")
+    lblCod = Label(janelaConsultaNome, text="Digite o nome do produto a ser consultado", background="#17c9ff")
+    lblCod.pack()
+
+    entradaNome = Entry(janelaConsultaNome)
+    entradaNome.pack()
+
+    lblSaida = Label(janelaConsultaNome, text="", background="#fff")
+    lblSaida.pack()
+
+    def consultaNome():
+        entNome = entradaNome.get()
+        vsql = "SELECT * FROM Produtos WHERE Nome_Prod LIKE '%"+entNome+"%'"
+        res = consultar(vsql)
+        for nome in res:
+            lblSaida.config(text="Nome do produto: {};\nCódigo do produto: {};\nValor do produto: {};\nQuantidade do Produto: {}".format(nome[3], nome[0], nome[1], nome[2]))
+        
+
+    btn = Button(janelaConsultaNome, text="Consultar", command=consultaNome)
+    btn.pack()
+
+def consultarPorCod():
+    janelaConsultaCod = Toplevel()
+    janelaConsultaCod.resizable(False, False)
+    janelaConsultaCod.title("Consultar produto por código")
+    janelaConsultaCod.geometry("900x700")
+    janelaConsultaCod.configure(background="#17c9ff")
+    icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
+    janelaConsultaCod.iconbitmap(icone)
+
+    lblCod = Label(janelaConsultaCod, text="Digite o código do produto a ser consultado", background="#17c9ff")
+    lblCod.pack()
+
+    entradaCod = Entry(janelaConsultaCod)
+    entradaCod.pack()
+
+    lblSaida = Label(janelaConsultaCod, text="", background="#fff")
+    lblSaida.pack()
+
+    def consultaNome():
+        entCod = entradaCod.get()
+        vsql = "SELECT * FROM Produtos WHERE Cod_Prod LIKE '%"+entCod+"%'"
+        res = consultar(vsql)
+        for nome in res:
+            lblSaida.config(text="Código do produto: {};\nNome do produto: {};\nValor do produto: {};\nQuantidade do Produto: {}".format(nome[0], nome[3], nome[1], nome[2]))
+        
+
+    btn = Button(janelaConsultaCod, text="Consultar", command=consultaNome)
+    btn.pack()
+
+    #Frame da img
+    #Frame_igm = Frame(sobre, background="#aad1fc")
+    #Frame_igm.place(x =40, y = 100, width= 300, height= 400)
+    #foto
+    #try: 
+        #image = Image.open("C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/joia.gif")
+        #photo = ImageTk.PhotoImage(image)
+        #img = Label(Frame_igm, image=photo)
+        #img.pack(pady=50)
+    #except EXCEPTION as erro:
+        #print(erro)
 
 def sobreNos():
-    print("Sobre nós")
+    sobre = Toplevel() 
+    sobre.resizable(False, False) 
+    icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
+    sobre.iconbitmap(icone)
+    sobre.title("Sobre nós")
+    sobre.geometry("900x700")
+    sobre.configure(background="#aad1fc")
+    
 
 def fechar():
     main.quit()
@@ -138,7 +216,7 @@ barraDeMenus.add_cascade(label="Produtos", menu=menuProduto)
 
 menuConsulta = Menu(barraDeMenus, tearoff=0)
 menuConsulta.add_command(label="Por nome", command=consultarPorNome)
-menuConsulta.add_command(label="Por ID", command=consultarPorID)
+menuConsulta.add_command(label="Por Cod", command=consultarPorCod)
 barraDeMenus.add_cascade(label="Consulta", menu=menuConsulta)
 
 menuSobre = Menu(barraDeMenus, tearoff=0)
