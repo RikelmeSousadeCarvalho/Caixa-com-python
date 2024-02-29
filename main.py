@@ -189,8 +189,32 @@ def sobreNos():
     sobre.iconbitmap(icone)
     sobre.title("Sobre nós")
     sobre.geometry("900x700")
-    sobre.configure(background="#aad1fc")
+    sobre.configure(background="#17c9ff")
     
+    #Frame da img
+    Frame_igm = Label(sobre, background="#17c9ff")
+    Frame_igm.place(x =40, y = 100, width= 300, height= 400)
+    #foto
+    try: 
+        image = Image.open("C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/joia.gif")
+        photo = ImageTk.PhotoImage(image)
+        img = Label(Frame_igm, image=photo)
+        img.pack(pady=50)
+    except Exception as erro:
+        print(erro)
+
+
+    #Frame texto
+    Frame_txt = Label(sobre, background="#17c9ff")
+    Frame_txt.place(x = 370, y = 100, width= 500, height= 400)
+    #Parágrafos
+    h1 = Label(Frame_txt,text="Obrigado!", font=("Trebuchet MS", 30), background="#17c9ff")
+    h1.pack(anchor="nw", padx=10, pady=60)
+    p1 = Label(Frame_txt,text="Agradeço pelo interesse e pela avaliação!", font=("Segoe UI",16), background="#17c9ff")
+    p1.pack(anchor="nw", padx=10)
+    p2 = Label(Frame_txt,text="Desenvolvido por Rikelme Sousa de Carvalho", font=("Segoe UI",16), background="#17c9ff")
+    p2.pack(anchor="nw", padx=10)
+    sobre.mainloop()
 
 def fechar():
     main.quit()
