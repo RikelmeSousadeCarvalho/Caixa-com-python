@@ -2,7 +2,7 @@ import pyodbc
 import tkinter as tk
 from tkinter import Label, Entry, Button, Menu, Toplevel
 from PIL import Image, ImageTk 
-
+from tkinter import messagebox
 conn = None
 
 def conexao():
@@ -38,38 +38,38 @@ def consultar(sql):
 def adicionarProd():
     janelaProd = Toplevel()
     janelaProd.resizable(False, False)
-    janelaProd.title("Adicionar Produto")
+    janelaProd.title("Adicionar Produto ao Estoque")
     janelaProd.geometry("900x700")
     janelaProd.configure(background="#17c9ff")
     icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
     janelaProd.iconbitmap(icone)
 
-    lblTitulo = Label(janelaProd, text="Adicionar produto", background="#17c9ff")
-    lblTitulo.pack()
+    lblTitulo = Label(janelaProd, text="Adicionar produto", font=("Trebuchet MS", 30), background="#17c9ff")
+    lblTitulo.pack(pady=30)
 
-    lblCod = Label(janelaProd, text="Código do produto", background="#17c9ff")
-    lblCod.pack()
+    lblCod = Label(janelaProd, text="Código do produto", font=("Segoe UI", 16), background="#17c9ff")
+    lblCod.pack(pady=10)
 
     entradaCod = Entry(janelaProd)
     entradaCod.pack()
 
-    lbl1 = Label(janelaProd, text="Nome do produto", background="#17c9ff")
-    lbl1.pack()
+    lbl1 = Label(janelaProd, text="Nome do produto", font=("Segoe UI", 16), background="#17c9ff")
+    lbl1.pack(pady=10)
 
     entradaNome = Entry(janelaProd)
     entradaNome.pack()
 
-    lbl2 = Label(janelaProd, text="Valor do produto", background="#17c9ff")
-    lbl2.pack()
+    lbl2 = Label(janelaProd, text="Valor do produto", font=("Segoe UI", 16), background="#17c9ff")
+    lbl2.pack(pady=10)
 
     entradaValor = Entry(janelaProd)
     entradaValor.pack()
 
-    lbl3 = Label(janelaProd, text="Quantidade do produto", background="#17c9ff")
-    lbl3.pack()
+    lbl3 = Label(janelaProd, text="Quantidade do produto", font=("Segoe UI", 16), background="#17c9ff")
+    lbl3.pack(pady=10)
 
     entradaQntd = Entry(janelaProd)
-    entradaQntd.pack()
+    entradaQntd.pack(pady=10)
 
     def adiciona():
         entCod = entradaCod.get()
@@ -84,10 +84,22 @@ def adicionarProd():
     btn = Button(janelaProd, text="Adicionar", command=adiciona)
     btn.pack()
 
+    Frame_igm = Label(janelaProd, background="#17c9ff")
+    Frame_igm.pack()
+    try: 
+        image = Image.open("C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/carrinhocheio.gif")
+        photo = ImageTk.PhotoImage(image)
+        img = Label(Frame_igm, image=photo, background="#17c9ff")
+        img.pack()
+    except Exception as erro:
+        print(erro)
+
+    janelaProd.mainloop()
+
 def deletarProd():
     janelaProdApagar = Toplevel()
     janelaProdApagar.resizable(False, False)
-    janelaProdApagar.title("Deletar Produto")
+    janelaProdApagar.title("Deletar Produto do Estoque")
     janelaProdApagar.geometry("900x700")
     janelaProdApagar.configure(background="#17c9ff")
     icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
@@ -110,6 +122,64 @@ def deletarProd():
         janelaProdApagar.destroy()
 
     btn = Button(janelaProdApagar, text="Deletar", command=deleta)
+    btn.pack()
+
+def carrinho():
+    janelaCarrinho = Toplevel()
+    janelaCarrinho.resizable(False, False)
+    janelaCarrinho.title("Carrinho")
+    janelaCarrinho.geometry("900x700")
+    janelaCarrinho.configure(background="#17c9ff")
+    icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
+    janelaCarrinho.iconbitmap(icone)
+
+    lblTitulo = Label(janelaCarrinho, text="Carrinho de compras", background="#17c9ff")
+    lblTitulo.pack()
+
+    lblNome = Label(janelaCarrinho, text="Nome do produto a ser adicionado ao carrinho", background="#17c9ff")
+    lblNome.pack()
+
+    entradaNome = Entry(janelaCarrinho)
+    entradaNome.pack()
+
+    lblQntd = Label(janelaCarrinho, text="Quantidade do produto", background="#17c9ff")
+    lblQntd.pack()
+
+    entradaQntd = Entry(janelaCarrinho)
+    entradaQntd.pack()
+
+    lblSaida = Label(janelaCarrinho, text="", background="#fff")
+    lblSaida.pack()
+
+    lblProdCar = Label(janelaCarrinho, text="", background="#fff")
+    lblProdCar.pack()
+
+    prodAdicionados = []
+    lblProdAdicionados = Label(janelaCarrinho, text="", background="#fff")
+    lblProdAdicionados.pack()
+
+    def consulta():
+        lblProdCar.config(text="")
+        entNome = entradaNome.get()
+        entQntd = int(entradaQntd.get())
+        vsql = "SELECT Quantidade_Prod FROM Produtos WHERE Nome_Prod LIKE '%"+entNome+"%'"
+        sqlNome = "SELECT * FROM Produtos WHERE Nome_Prod LIKE '%"+entNome+"%'"
+        res = consultar(vsql)
+        res2 = consultar(sqlNome)
+        quantidade_disponivel = int(res[0][0]) if res else 0  # Convertendo para inteiro
+        if quantidade_disponivel <= 0 or res2 == False:
+            messagebox.showinfo(title="Produto sem estoque ou não existe", message="Este produto está sem estoque ou não existe no estoque")
+        else:
+            nova_quantidade = quantidade_disponivel - entQntd
+            vsql2 = "UPDATE Produtos SET Quantidade_Prod = {} WHERE Nome_Prod LIKE '%{}%'".format(nova_quantidade, entNome)
+            query(vsql2)
+            prodAdicionados.append(entNome)
+            lblProdAdicionados.config(text= "Produtos no carrinho: {}".format(prodAdicionados))
+            lblProdCar.config(text="Produto adicionado!\n")
+        entradaNome.delete('0', 'end')
+        entradaQntd.delete('0', 'end')
+
+    btn = Button(janelaCarrinho, text="Adicionar ao carrinho", command=consulta)
     btn.pack()
 
 def consultarPorNome():
@@ -234,8 +304,9 @@ conexao()
 barraDeMenus = Menu(main)
 
 menuProduto = Menu(barraDeMenus, tearoff=0)
-menuProduto.add_command(label="Adicionar Produto", command=adicionarProd)
-menuProduto.add_command(label="Deletar Produto", command=deletarProd)
+menuProduto.add_command(label="Adicionar Produto ao Estoque", command=adicionarProd)
+menuProduto.add_command(label="Deletar Produto do Estoque", command=deletarProd)
+menuProduto.add_command(label="Carrinho", command=carrinho)
 barraDeMenus.add_cascade(label="Produtos", menu=menuProduto)
 
 menuConsulta = Menu(barraDeMenus, tearoff=0)
