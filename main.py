@@ -76,10 +76,13 @@ def adicionarProd():
         entNome = entradaNome.get()
         entValor = entradaValor.get()
         entQntd = entradaQntd.get()
-        vsql = "INSERT INTO Produtos (Cod_Prod, ValorUnit_Prod, Quantidade_Prod, Nome_Prod) VALUES ('{}', '{}', '{}', '{}')".format(entCod, entValor, entQntd, entNome)
-        query(vsql)
-        # Fechar a janela após adicionar o produto
-        janelaProd.destroy()
+        try:
+            vsql = "INSERT INTO Produtos (Cod_Prod, ValorUnit_Prod, Quantidade_Prod, Nome_Prod) VALUES ('{}', '{}', '{}', '{}')".format(entCod, entValor, entQntd, entNome)
+            query(vsql)
+            messagebox.showinfo(title="Alerta", message="O produto foi adicionado!")
+        except Exception as erro:
+            print(erro)
+
 
     btn = Button(janelaProd, text="Adicionar",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=adiciona)
     btn.pack()
@@ -108,18 +111,21 @@ def deletarProd():
     lblTitulo = Label(janelaProdApagar, text="Deletar produto", font=("Trebuchet MS", 30), background="#0A81AB")
     lblTitulo.pack(pady=20)
 
-    lblCod = Label(janelaProdApagar, text="Digite o código do produto a ser deletado", font=("Segoe UI", 16), background="#0A81AB")
-    lblCod.pack(pady=10)
+    lblNome = Label(janelaProdApagar, text="Digite o nome do produto a ser deletado", font=("Segoe UI", 16), background="#0A81AB")
+    lblNome.pack(pady=10)
 
-    entradaCod = Entry(janelaProdApagar, background="#F9DFDC")
-    entradaCod.pack(pady=10)
+    entradaNome = Entry(janelaProdApagar, background="#F9DFDC")
+    entradaNome.pack(pady=10)
 
     def deleta():
-        entCod = entradaCod.get()
-        vsql = "DELETE FROM Produtos WHERE Cod_Prod="+entCod
-        query(vsql)
-        # Fechar a janela após deletar o produto
-        janelaProdApagar.destroy()
+        entNome = entradaNome.get()
+        try: 
+            vsql = "DELETE FROM Produtos WHERE Nome_Prod LIKE'%"+entNome+"%'"
+            query(vsql)
+            messagebox.showinfo(title="Alerta", message="O produto foi deletado!")
+        except Exception as erro:
+            print(erro)
+        
 
     btn = Button(janelaProdApagar, text="Deletar",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=deleta)
     btn.pack(pady=20)
@@ -297,7 +303,7 @@ def consultarPorNome():
     entradaNome = Entry(janelaConsultaNome, background="#F9DFDC")
     entradaNome.pack(pady=10)
 
-    lblSaida = Label(janelaConsultaNome, text="", background="#0A81AB", font=("Segoe UI", 16))
+    lblSaida = Label(janelaConsultaNome, text="", background="#F9DFFC", relief="solid", borderwidth=3, font=("Segoe UI", 16))
     lblSaida.pack(pady=20)
 
     def consultaNome():
@@ -342,7 +348,7 @@ def consultarPorCod():
     entradaCod = Entry(janelaConsultaCod, background="#F9DFDC")
     entradaCod.pack(pady=10)
 
-    lblSaida = Label(janelaConsultaCod, text="", background="#0A81AB")
+    lblSaida = Label(janelaConsultaCod, text="", background="#F9DFDC", relief="solid", borderwidth=3, font=("Segoe UI", 16))
     lblSaida.pack(pady=20)
 
     def consultaNome():
