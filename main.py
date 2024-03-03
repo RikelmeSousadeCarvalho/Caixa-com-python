@@ -1,6 +1,6 @@
 import pyodbc
 import tkinter as tk
-from tkinter import Label, Entry, Button, Menu, Toplevel
+from tkinter import Frame, Label, Entry, Button, Menu, Toplevel
 from PIL import Image, ImageTk 
 from tkinter import messagebox
 conn = None
@@ -196,34 +196,9 @@ def carrinho():
     janelaCarrinho.resizable(False, False)
     janelaCarrinho.title("Carrinho")
     janelaCarrinho.geometry("900x700")
-    janelaCarrinho.configure(background="#17c9ff")
+    janelaCarrinho.configure(background="#0A81AB")
     icone = "C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/icon.ico"
     janelaCarrinho.iconbitmap(icone)
-
-    lblTitulo = Label(janelaCarrinho, text="Carrinho de compras", background="#17c9ff")
-    lblTitulo.pack()
-
-    lblNome = Label(janelaCarrinho, text="Nome do produto a ser adicionado ao carrinho", background="#17c9ff")
-    lblNome.pack()
-
-    entradaNome = Entry(janelaCarrinho)
-    entradaNome.pack()
-
-    lblQntd = Label(janelaCarrinho, text="Quantidade do produto", background="#17c9ff")
-    lblQntd.pack()
-
-    entradaQntd = Entry(janelaCarrinho)
-    entradaQntd.pack()
-
-    lblSaida = Label(janelaCarrinho, text="", background="#fff")
-    lblSaida.pack()
-
-    lblProdCar = Label(janelaCarrinho, text="", background="#fff")
-    lblProdCar.pack()
-
-    prodAdicionados = []
-    lblProdAdicionados = Label(janelaCarrinho, text="", background="#fff")
-    lblProdAdicionados.pack()
 
     def consulta():
         lblProdCar.config(text="")
@@ -242,23 +217,11 @@ def carrinho():
             query(vsql2)
             prodAdicionados.append(entNome)
             lblProdAdicionados.config(text= "Produtos no carrinho: {}".format(prodAdicionados))
-            lblProdCar.config(text="Produto adicionado!\n")
+            messagebox.showinfo(title="Info", message="Produto adicionado ao carrinho!")
     
     def limpar():
         entradaNome.delete('0', 'end')
         entradaQntd.delete('0', 'end')
-
-    btnAdd = Button(janelaCarrinho, text="Adicionar ao carrinho", command=consulta)
-    btnAdd.pack()
-
-    btnLimpar = Button(janelaCarrinho, text="Limpar", command=limpar)
-    btnLimpar.pack()
-
-    listaTotal = []
-    lblTotal = Label(janelaCarrinho, text="Valor total: ", background="#fff")
-    lblTotal.pack()
-
-    notaFiscal = []
 
     def total():
         entNome = entradaNome.get()
@@ -279,8 +242,41 @@ def carrinho():
         entradaNome.delete('0', 'end')
         entradaQntd.delete('0', 'end')
 
+    lblTitulo = Label(janelaCarrinho, text="Carrinho de compras", font=("Trebuchet MS", 30), background="#0A81AB")
+    lblTitulo.pack(pady=20)
+
+    lblNome = Label(janelaCarrinho, text="Nome do produto a ser adicionado ao carrinho", background="#0A81AB", font=("Segoe UI", 16))
+    lblNome.pack(pady=10)
+
+    entradaNome = Entry(janelaCarrinho, background="#F9DFDC")
+    entradaNome.pack()
+
+    lblQntd = Label(janelaCarrinho, text="Quantidade do produto", background="#0A81AB", font=("Segoe UI", 16))
+    lblQntd.pack(pady=10)
+
+    entradaQntd = Entry(janelaCarrinho, background="#F9DFDC")
+    entradaQntd.pack()
     
-    btnTotal = Button(janelaCarrinho, text="Mostrar total", command=total)
+    btnAdd = Button(janelaCarrinho, text="Adicionar ao carrinho",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=consulta)
+    btnAdd.place(x = 315, y = 300)
+
+    btnLimpar = Button(janelaCarrinho, text="Limpar",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=limpar)
+    btnLimpar.place(x = 515, y = 300)
+
+    fr_notaFiscal = Frame(janelaCarrinho, relief="solid", background="#fff")
+    fr_notaFiscal.place(x = 300, y = 400, width=300, height=400)
+
+    prodAdicionados = []
+    lblProdAdicionados = Label(fr_notaFiscal, text="Produtos no carrinho: ", background="#fff", font=("Segoe UI", 16))
+    lblProdAdicionados.pack(pady=10)
+
+    listaTotal = []
+    lblTotal = Label(fr_notaFiscal, text="Valor total: ", background="#fff", font=("Segoe UI", 16))
+    lblTotal.pack()
+
+    notaFiscal = []
+
+    btnTotal = Button(janelaCarrinho, text="Mostrar total",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=total)
     btnTotal.pack()
 
 def consultarPorNome():
