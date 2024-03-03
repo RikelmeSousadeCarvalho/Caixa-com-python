@@ -201,7 +201,6 @@ def carrinho():
     janelaCarrinho.iconbitmap(icone)
 
     def consulta():
-        lblProdCar.config(text="")
         entNome = entradaNome.get()
         entQntd = int(entradaQntd.get())
         vsql = "SELECT Quantidade_Prod FROM Produtos WHERE Nome_Prod LIKE '%"+entNome+"%'"
@@ -258,26 +257,27 @@ def carrinho():
     entradaQntd.pack()
     
     btnAdd = Button(janelaCarrinho, text="Adicionar ao carrinho",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=consulta)
-    btnAdd.place(x = 315, y = 300)
+    btnAdd.place(x = 315, y = 275)
 
     btnLimpar = Button(janelaCarrinho, text="Limpar",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=limpar)
-    btnLimpar.place(x = 515, y = 300)
+    btnLimpar.place(x = 515, y = 275)
 
-    fr_notaFiscal = Frame(janelaCarrinho, relief="solid", background="#fff")
-    fr_notaFiscal.place(x = 300, y = 400, width=300, height=400)
+    fr_notaFiscal = Frame(janelaCarrinho, relief="solid", borderwidth=3, background="#F9DFDC")
+    fr_notaFiscal.place(x = 200, y = 350, width=500, height=200)
+
+    lbtitlefr = Label(fr_notaFiscal, text="Nota fiscal", background="#F9DFDC", font=("Segoe UI", 20))
+    lbtitlefr.pack(anchor="nw", ipadx=10)
 
     prodAdicionados = []
-    lblProdAdicionados = Label(fr_notaFiscal, text="Produtos no carrinho: ", background="#fff", font=("Segoe UI", 16))
-    lblProdAdicionados.pack(pady=10)
+    lblProdAdicionados = Label(fr_notaFiscal, text="Produtos no carrinho: ", background="#F9DFDC", font=("Segoe UI", 16))
+    lblProdAdicionados.pack(pady=10, anchor="nw", ipadx=10)
 
     listaTotal = []
-    lblTotal = Label(fr_notaFiscal, text="Valor total: ", background="#fff", font=("Segoe UI", 16))
-    lblTotal.pack()
-
-    notaFiscal = []
+    lblTotal = Label(fr_notaFiscal, text="Valor total: ", background="#F9DFDC", font=("Segoe UI", 16))
+    lblTotal.pack(anchor="nw", ipadx=10)
 
     btnTotal = Button(janelaCarrinho, text="Mostrar total",background="#0C4271", foreground="#F9DFDC", relief="solid" , font=("Segoe UI", 12), command=total)
-    btnTotal.pack()
+    btnTotal.place(x = 400, y = 575)
 
 def consultarPorNome():
     janelaConsultaNome = Toplevel()
@@ -442,12 +442,21 @@ barraDeMenus.add_cascade(label="Fechar", menu=menuFechar)
 main.config(menu=barraDeMenus)
 
 # Título da janela
-titulo = Label(main, text="Caixa", background="#0A81AB", font=("Bahnschrift", 30))
+titulo = Label(main, text="Caixa", background="#0A81AB", font=("Trebuchet MS", 30))
 titulo.place(x=-30, y=0, width=900, height=100)
 
 image = Image.open("C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/carrinho.ico")
 photo = ImageTk.PhotoImage(image)
 img = Label(main, image=photo, background="#0A81AB")
 img.place(x=500, y=0)
+
+lb_msng = Label(main, text="Bem-vindo ao meu sistema de supermercado! \n Escolha uma opcão no menu acima para usá-lo", background="#0A81AB", font=("Segoe UI", 20))
+lb_msng.place(x = 175, y = 200)
+
+image2 = Image.open("C:/Users/rikel/OneDrive/Documentos/MeusProjetos/Caixa-com-python/imagens/pessoas.gif")
+photo2 = ImageTk.PhotoImage(image2)
+img2 = Label(main, image=photo2, background="#0A81AB")
+img2.place(x=250, y=300)
+
 
 main.mainloop()
